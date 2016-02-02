@@ -60,7 +60,7 @@ public:
 		return head;
 	}
 
-	ListNode* FindLoop(ListNode* head) {
+	ListNode* FindLoop1(ListNode* head) {
 		ListNode *chaser;
 		ListNode *runner;
 
@@ -80,8 +80,7 @@ public:
 				is_loop = false;
 				break;
 			} else {
-				runner = runner->next_;
-				runner = runner->next_;
+				runner = runner->next_->next_;
 				chaser = chaser->next_;
 			}
 		}
@@ -104,7 +103,39 @@ public:
 		}
 
 		return NULL;
+	}
 
+	ListNode* FindLoop(ListNode* head) {
+		if (!head) {
+			return NULL;
+		}
+		ListNode *chaser;
+		ListNode *runner;
+
+		chaser = head;
+		runner = head;
+
+		while (runner && runner->next_) {
+			runner = runner->next_->next_;
+			chaser = chaser->next_;
+			if (chaser == runner) {
+				break;
+			}
+		}
+		if (!runner || !runner->next_) {
+			return NULL;
+		}
+
+		cout << "Find a loop\n";
+
+		chaser = head;
+		while (chaser != runner) {
+			chaser = chaser->next_;
+			runner = runner->next_;
+
+		}
+
+		return chaser;
 	}
 };
 
