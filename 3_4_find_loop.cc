@@ -25,6 +25,7 @@ public:
 public:
 	ListNode(int value) : value_(value), next_(NULL) {}
 
+	// Remove the nth node to end.
 	ListNode* RemoveNthFromEnd(ListNode* head, int n) {
 		if (n <= 0)
 			return head;
@@ -68,12 +69,9 @@ public:
 		}
 		chaser = head;
 		runner = head->next_;
-		int n = 1;
-		int m = 1;
 		bool is_loop = false;
 
 		while (runner) {
-			m++;
 			if (chaser == runner) {
 				is_loop = true;
 				break;
@@ -83,25 +81,29 @@ public:
 				break;
 			} else {
 				runner = runner->next_;
-				m++;
 				runner = runner->next_;
 				chaser = chaser->next_;
-				n++;
 			}
 		}
 		if (!is_loop) {
 			return NULL;
 		}
 
-		int loop_len = m - n;
+		cout << "Find a loop\n";
 
-		cout << "n: " << n << ", m:" << m << ", loop_len: " << loop_len << "\n";
+		ListNode *list_start = head;
+		ListNode *loop_start = runner->next_;
 
-		ListNode *loop_start = runner;
-		for (int i = 0; i < loop_len / 2 + 1; ++i) {
-			loop_start = loop_start->next_;
+		while (1) {
+			if (list_start == loop_start) {
+				return loop_start;
+			} else {
+				list_start = list_start->next_;
+				loop_start = loop_start->next_;
+			}
 		}
-		return loop_start;
+
+		return NULL;
 
 	}
 };
@@ -254,6 +256,48 @@ TEST(FindLoop, case2) {
 	} else {
 		cout << "Do not find loop \n";
 	}
+
+}
+
+TEST(FindLoop, case3) {
+	List list;
+	list.Clear();
+	vector<int> nodes{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	list.Construct(nodes);
+	list.Print();
+
+	ListNode *node_end = list.head_;
+	for (int i = 0; i < (int)nodes.size() - 1; ++i) {
+		node_end = node_end->next_;
+	}
+	cout << "node_end: " << node_end << ", value: " << node_end->value_ << ", " << node_end->next_ << "\n";
+
+	ListNode *node_intersection = list.head_;
+	for (int i = 0; i < 2 - 1; ++i) {
+		node_intersection = node_intersection->next_;
+	}
+	cout << "node_intersection: " << node_intersection << ", value: " << node_intersection->value_ << "\n";
+
+	cout << "node_end->next_: " << node_end->next_ << "\n";
+	node_end->next_ = node_intersection;
+
+	ListNode *node = list.head_;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << node->value_ << ", ";
+		node = node->next_;
+	}
+	cout << "\n";
+
+	ListNode *mid = list.head_->FindLoop(list.head_);
+	ASSERT_EQ(node_intersection, mid);
+	if (mid) {
+		cout << "Find loop, start is " << mid << ", value: " << mid->value_ << "\n";
+	} else {
+		cout << "Do not find loop \n";
+	}
+	ASSERT_EQ(2, mid->value_);
+
 
 }
 
