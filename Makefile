@@ -31,7 +31,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 # created to the list.
 TESTS = is_unique_chars is_two_strings_permutations can_compose replace_space_with_string \
 		reverse_sentence replace_substring_with_space 3_1_reorder_list 3_2_midpoint \
-		3_4_find_loop
+		3_4_find_loop 3_5_rotate_right
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -125,4 +125,11 @@ replace_substring_with_space : replace_substring_with_space.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/3_4_find_loop.cc
 	
 3_4_find_loop : 3_4_find_loop.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@						
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@		
+	
+3_5_rotate_right.o : $(USER_DIR)/3_5_rotate_right.cc $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/3_5_rotate_right.cc
+	
+3_5_rotate_right : 3_5_rotate_right.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@	
+					
