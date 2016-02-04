@@ -94,7 +94,7 @@ public:
 		return chaser;
 	}
 
-	ListNode* RotateRight(ListNode *head, int k) {
+	static ListNode* RotateRight(ListNode *head, int k) {
 		ListNode *slow = head;
 		ListNode *fast = head;
 
@@ -110,17 +110,18 @@ public:
 			slow = slow->next_;
 			fast = fast->next_;
 		}
+
+		if (head == slow) {
+			return head;
+		}
+
 		ListNode *prev = head;
-		while (prev != slow) {
+		while (prev->next_ != slow) {
 			prev = prev->next_;
 		}
-		if (prev == slow) {
-			return head;
-		} else {
-			prev->next_ = NULL;
-			fast->next_ = head;
-			return slow;
-		}
+		prev->next_ = NULL;
+		fast->next_ = head;
+		return slow;
 	}
 };
 
@@ -200,15 +201,49 @@ public:
 	}
 };
 
-TEST(FindLoop, case1) {
+TEST(RotateRight, case1) {
 	List list;
 	list.Clear();
 	vector<int> nodes{1, 2, 3, 4, 5};
 	list.Construct(nodes);
 	list.Print();
 
-	list.head_ = list.head_->RotateRight(list.head_, 2);
+	list.head_ = ListNode::RotateRight(list.head_, 2);
 	cout << "After rotate right by 2 \n";
 	list.Print();
 }
 
+TEST(RotateRight, case2) {
+	List list;
+	list.Clear();
+	vector<int> nodes{1, 2, 3, 4, 5};
+
+	for (int i : nodes) {
+		list.Clear();
+		list.Construct(nodes);
+		list.Print();
+		list.head_ = ListNode::RotateRight(list.head_, i);
+		cout << "After rotate right by " << i << " \n";
+		list.Print();
+		cout << "\n";
+	}
+
+}
+
+TEST(RotateRight, case3) {
+	List list;
+	list.Clear();
+	vector<int> nodes{1, 2, 3, 4, 5};
+
+	vector<int> nodes2{0, 1, 2, 3, 4, 5, 6, 7};
+	for (int i : nodes2) {
+		list.Clear();
+		list.Construct(nodes);
+		list.Print();
+		list.head_ = ListNode::RotateRight(list.head_, i);
+		cout << "After rotate right by " << i << " \n";
+		list.Print();
+		cout << "\n";
+	}
+
+}
