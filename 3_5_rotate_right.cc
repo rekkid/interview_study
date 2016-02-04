@@ -94,7 +94,8 @@ public:
 		return chaser;
 	}
 
-	static ListNode* RotateRight(ListNode *head, int k) {
+	// 算法没有考虑旋转，即k可能大于链表的长度
+	static ListNode* RotateRight1(ListNode *head, int k) {
 		ListNode *slow = head;
 		ListNode *fast = head;
 
@@ -122,6 +123,34 @@ public:
 		prev->next_ = NULL;
 		fast->next_ = head;
 		return slow;
+	}
+
+	// 考虑旋转情况
+	static ListNode* RotateRight(ListNode *head, int k) {
+		if (!head || k < 0) {
+			return NULL;
+		}
+
+		int len = 1;
+		ListNode *tmp = head;
+		while (tmp->next_) {
+			len++;
+			tmp = tmp->next_;
+		}
+		tmp->next_ = head;
+
+		cout << "len: " << len << "\n";
+
+		int pos = k % len;
+
+		ListNode *cur = head;
+		for (int i = 0; i < len - pos - 1; ++i) {
+			cur = cur->next_;
+		}
+		ListNode *new_head = cur->next_;
+		cur->next_ = NULL;
+
+		return new_head;
 	}
 };
 
