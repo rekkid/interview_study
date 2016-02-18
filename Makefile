@@ -31,7 +31,8 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 # created to the list.
 TESTS = is_unique_chars is_two_strings_permutations can_compose replace_space_with_string \
 		reverse_sentence replace_substring_with_space 3_1_reorder_list 3_2_midpoint \
-		3_4_find_loop 3_5_rotate_right
+		3_4_find_loop 3_5_rotate_right 3_6_reverse_linked_list 3_9_reversed_traverse \
+		3_10_add_list 4_3_ordered_stack
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -131,5 +132,29 @@ replace_substring_with_space : replace_substring_with_space.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/3_5_rotate_right.cc
 	
 3_5_rotate_right : 3_5_rotate_right.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@	
+	
+3_6_reverse_linked_list.o : $(USER_DIR)/3_6_reverse_linked_list.cc $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/3_6_reverse_linked_list.cc
+	
+3_6_reverse_linked_list : 3_6_reverse_linked_list.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@	
+	
+3_9_reversed_traverse.o : $(USER_DIR)/3_9_reversed_traverse.cc $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/3_9_reversed_traverse.cc
+	
+3_9_reversed_traverse : 3_9_reversed_traverse.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@	
+	
+3_10_add_list.o : $(USER_DIR)/3_10_add_list.cc $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/3_10_add_list.cc
+	
+3_10_add_list : 3_10_add_list.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@	
+	
+4_3_ordered_stack.o : $(USER_DIR)/4_3_ordered_stack.cc $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/4_3_ordered_stack.cc
+	
+4_3_ordered_stack : 4_3_ordered_stack.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@	
 					
